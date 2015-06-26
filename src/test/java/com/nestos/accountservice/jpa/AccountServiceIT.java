@@ -134,7 +134,7 @@ public class AccountServiceIT {
     }
  
     @Test
-    public void accountServiceMustWorkInMultithreadEnvironment()
+    public void accountServiceMustWorkInMultithreadEnvironmentWithoutClearCache()
             throws InterruptedException {
         // arrange
         ExecutorService executor = Executors.newFixedThreadPool(NUMBER_THREADS);
@@ -175,6 +175,39 @@ public class AccountServiceIT {
                 getAmountCount, (long) statisticHandler.getMethodInvocationCount("getAmount"));
         assertEquals("Invalid statistic for addAmount method:",
                 addAmountCount, (long) statisticHandler.getMethodInvocationCount("addAmount"));
+    }
+    
+    @Test
+    public void accountServiceMustWorkInMultithreadEnvironmentWithClearCache()
+            throws InterruptedException {
+        // arrange
+        ExecutorService executor = Executors.newFixedThreadPool(NUMBER_THREADS);
+        ConcurrentHashMap<Integer,AtomicLong> total = new ConcurrentHashMap<>();
+        Random random = new Random();
+        
+        // act
+        for (int i = 0; i < REPEAT_COUNT; i++) {
+            int id = random.nextInt((ID_MAX_VALUE - ID_MIN_VALUE) + 1) + ID_MIN_VALUE;
+            long amount = random.nextInt((AMOUNT_MAX_VALUE - AMOUNT_MIN_VALUE) + 1) 
+                    + AMOUNT_MIN_VALUE;
+            if (Math.random() < GET_REQUEST_RATIO) {
+                executor.submit(new GetAmountTask(id));
+            } else {
+                executor.submit(new AddAmountTask(id, amount, total));
+            }
+        }
+        executor.shutdown();
+        executor.awaitTermination(1, TimeUnit.DAYS);
+        partitionProcessorPool.awaitIdle(); // block while partitionProcessorPool is work
+        cacheManager.getCache(AccountServiceImpl.ACCOUNT_CACHE_NAME).clear();
+        // assert
+        for (Map.Entry<Integer,AtomicLong> entry : total.entrySet()) {
+            Integer id = entry.getKey();
+            AtomicLong amount = entry.getValue();
+            long realAmount = remoteAccountService.getAmount(id);
+            assertEquals("Total ammount for id=" + id + " mismatch:",
+                amount.get(), realAmount);
+        }
     }
     
 }

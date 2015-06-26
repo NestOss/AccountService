@@ -5,12 +5,14 @@ import com.nestos.accountservice.domain.AddOperation;
 import com.nestos.accountservice.kafka.KafkaClient;
 import com.nestos.accountservice.repository.AccountRepository;
 import com.nestos.accountservice.service.AccountService;
-import javax.annotation.PreDestroy;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static org.apache.commons.lang3.Validate.*;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * Account service.
@@ -30,9 +32,14 @@ public class AccountServiceImpl implements AccountService {
     //-------------------Fields---------------------------------------------------
     @Autowired
     private AccountRepository accountRepository;
-    
+
     @Autowired
     private KafkaClient kafkaClient;
+
+    @Autowired
+    private CacheManager cacheManager;
+    
+    private Cache cache;
 
     //-------------------Constructors---------------------------------------------
     //-------------------Getters and setters--------------------------------------
@@ -45,12 +52,19 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(ACCOUNT_CACHE_NAME)
+    // @Cacheable(ACCOUNT_CACHE_NAME)
     public Long getAmount(Integer id) {
         notNull(id, ID_NPE_MESSAGE);
         inclusiveBetween(0, Integer.MAX_VALUE, id, ID_IAE_MESSAGE);
+        Long amount;
+        amount = cache.get(id, Long.class);
+        if (amount != null) {
+            return amount;
+        }
         Account account = accountRepository.findOne(id);
-        return (account == null) ? 0 : account.getAmount();
+        amount = (account == null) ? 0 : account.getAmount();
+        cache.putIfAbsent(id, amount);
+        return amount;
     }
 
     /**
@@ -67,5 +81,10 @@ public class AccountServiceImpl implements AccountService {
         inclusiveBetween(0, Integer.MAX_VALUE, id, ID_IAE_MESSAGE);
         AddOperation addOperation = new AddOperation(id, value);
         kafkaClient.write(addOperation);
-    } 
+    }
+    
+    @PostConstruct
+    private void postConstruct() {
+        cache = cacheManager.getCache(ACCOUNT_CACHE_NAME);
+    }
 }

@@ -93,9 +93,8 @@ public class PartitionProcessor implements Runnable {
         isIdle.set(false);
         Map<Integer, Account> accountMap = batchAccountService.addAmounts(
                 addOperations, partitionId, offset + addOperations.size());
-        // evict cache. I see problem this multithreading. In future solve it this read-write lock.
         for (Account account : accountMap.values()) {
-            cache.evict(account.getId());
+            cache.put(account.getId(), account.getAmount());
         }
     }
 
