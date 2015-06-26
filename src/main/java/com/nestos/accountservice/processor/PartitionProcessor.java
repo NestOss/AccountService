@@ -82,7 +82,7 @@ public class PartitionProcessor implements Runnable {
 
     //-------------------Getters and setters--------------------------------------
     //-------------------Methods--------------------------------------------------
-    private void pullFromPartitionAndSaveToAccountRepository() {
+    void pullFromPartitionAndSaveToAccountRepository() {
         Partition partition = partitionRepository.findOne(partitionId);
         long offset = (partition == null) ? 0 : partition.getOffset();
         List<AddOperation> addOperations = kafkaClient.read(partitionId, offset);

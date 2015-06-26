@@ -4,7 +4,9 @@ import com.nestos.accountservice.aspect.StatisticHandler;
 import com.nestos.accountservice.jpa.AccountServiceImpl;
 import com.nestos.accountservice.kafka.KafkaClient;
 import com.nestos.accountservice.repository.AccountRepository;
+import com.nestos.accountservice.repository.PartitionRepository;
 import com.nestos.accountservice.service.AccountService;
+import com.nestos.accountservice.service.BatchAccountService;
 import static org.mockito.Mockito.mock;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -30,6 +32,16 @@ public class UnitTestConfig {
     //-------------------Getters and setters--------------------------------------
     //-------------------Methods--------------------------------------------------
     //-------------------Beans----------------------------------------------------
+    @Bean
+    public PartitionRepository partitionRepository() {
+        return mock(PartitionRepository.class);
+    }
+    
+    @Bean
+    public BatchAccountService batchAccountService() {
+        return mock(BatchAccountService.class);
+    }
+    
     @Bean
     public KafkaClient kafkaClient() {
         return mock(KafkaClient.class);
