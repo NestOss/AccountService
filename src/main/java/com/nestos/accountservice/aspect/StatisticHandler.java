@@ -141,8 +141,10 @@ public class StatisticHandler implements InitializingBean, DisposableBean {
      */
     @ManagedOperation(description = "Return count of target method invocations for last second.")
     public Long getMethodInvocationRate(String methodName) {
-        Pair<Long, Long> pair = invocationsLastSecHashMap.get(methodName);
-        return (pair == null) ? 0 : pair.getRight();
+        synchronized (lock) {
+            Pair<Long, Long> pair = invocationsLastSecHashMap.get(methodName);
+            return (pair == null) ? 0 : pair.getRight();
+        }
     }
 
     /**
