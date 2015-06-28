@@ -29,7 +29,7 @@ public class PartitionProcessor implements Runnable {
     private final static Logger logger = Logger.getLogger(PartitionProcessor.class.getName());
 
     //-------------------Constants------------------------------------------------
-    // Pause between cycle iterations (ms). TO DO  -  must be set in configurartion file. 
+    // Pause between cycle iterations (ms). TO DO  -  must be set in configuration file. 
     private static final int CYCLE_PAUSE = 100;
     public static final String KAFKA_CLIENT_NPE_MESSAGE = "kafkaClient can't be null.";
     public static final String PARTITION_REPOSITORY_NPE_MESSAGE
