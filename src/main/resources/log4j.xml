@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="false" xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender name="application" class="org.apache.log4j.FileAppender">
+        <param name="File" value="log/accountService.log"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.EnhancedPatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} [%-5p][%-16.16t][%30c{-2}] - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="processing" class="org.apache.log4j.FileAppender">
+        <param name="File" value="log/processing.log"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.EnhancedPatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} - %m%n"/>
+        </layout>
+    </appender>
+    
+    <logger name="com.nestos">
+        <level value="INFO"/>
+        <appender-ref ref="application"/>
+    </logger>
+    
+    <logger name="com.nestos.processing" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="processing"/>
+    </logger>
+           
+    <root>
+    </root>
+</log4j:configuration>

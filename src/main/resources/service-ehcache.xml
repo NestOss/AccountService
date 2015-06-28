@@ -1,0 +1,9 @@
+<ehcache updateCheck="false"
+         monitoring="autodetect" 
+         dynamicConfig="true">
+    <cache name="accountServiceCache" 
+               maxBytesLocalHeap="10m"
+               memoryStoreEvictionPolicy="LFU" 
+               transactionalMode="off">
+    </cache>
+</ehcache>
