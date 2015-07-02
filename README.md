@@ -81,6 +81,6 @@ service-ehcache.xml - cache settings.
 
 - to integration test service (Kafka Server must be launched) type: mvn verify
 
-8) To run AccountService type: mvn exec:java
+5) To run AccountService type: mvn exec:java
 
-9) Service statistic and logging control avaliable via JConsole.
+Service statistic and logging control avaliable via JConsole.
