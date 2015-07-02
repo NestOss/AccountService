@@ -63,7 +63,7 @@ bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 -
 Windows:
 bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 5 --topic testAccountTopic
 
-3) Make sure the settings AccountService settings in /src/main/resources:
+3) Make sure the AccountService settings in /src/main/resources:
 
 datasource-tx-jpa.xml - database connection settings;
 
@@ -75,12 +75,12 @@ rmi.xml - rmi settings;
 
 service-ehcache.xml - cache settings.
 
-4) Install Maven. Go to AccountService directory:
+4) Install Maven. Go to AccountService directory, then:
 
 - to unit test service type: mvn test
 
 - to integration test service (Kafka Server must be launched) type: mvn verify
 
-8) To run service type: mvn exec:java
+8) To run AccountService type: mvn exec:java
 
-9) Service statistics and logging control avaliable via JConsole. Service log writes in log directory.
+9) Service statistic and logging control avaliable via JConsole.
