@@ -1,6 +1,6 @@
 #Account Service
 
-Provide highload durable cachable RMI service, that exposes interface:
+Provides High-Loaded reliable cachable RMI service, that implements interface:
 
 public interface AccountService {
 
@@ -21,15 +21,15 @@ public interface AccountService {
     void addAmount(Integer id, Long value);
 }
 
-Installing the AccountService
+AccountService installation 
 
 1) Install MySQL Server v5.1 or higher, download link: https://dev.mysql.com/downloads/mysql
    
 Execute accountDB_DDL.sql on installed MySQL Server;
 
-2) Install message broker Apache Kafka v0.8.2 or higher, download link http://kafka.apache.org/downloads.html
+2) Install message broker Apache Kafka v0.8.2 or higher, download link: http://kafka.apache.org/downloads.html
    
-To start message broker go to Kafka installation directory. Execute:
+To start message broker go to Kafka installation directory, then type:
 
 Linux:
 bin/zookeeper-server-start.sh config/zookeeper.properties
@@ -41,7 +41,7 @@ bin\windows\zookeeper-server-start.bat config\zookeeper.properties
 
 -XX:+UseCompressedOops)
 
-Execute:
+Next type:
 
 Linux:
 bin/kafka-server-start.sh config/server.properties
@@ -63,7 +63,7 @@ bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 -
 Windows:
 bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 5 --topic testAccountTopic
 
-3) Ensure AccountService settings in /src/main/resources:
+3) Make sure the settings AccountService settings in /src/main/resources:
 
 datasource-tx-jpa.xml - database connection settings;
 
