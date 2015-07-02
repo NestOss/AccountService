@@ -29,7 +29,7 @@ Execute accountDB_DDL.sql on installed MySQL Server;
 
 2) Install message broker Apache Kafka v0.8.2 or higher, download link http://kafka.apache.org/downloads.html
    
-To start message broker goto Kafka installation directory, when type:
+To start message broker go to Kafka installation directory. Execute:
 
 Linux:
 bin/zookeeper-server-start.sh config/zookeeper.properties
@@ -41,7 +41,8 @@ bin\windows\zookeeper-server-start.bat config\zookeeper.properties
 
 -XX:+UseCompressedOops)
 
-when type:
+Execute:
+
 Linux:
 bin/kafka-server-start.sh config/server.properties
 
@@ -62,7 +63,7 @@ bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 -
 Windows:
 bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 5 --topic testAccountTopic
 
-3) Ensures AccountService settings in /src/main/resources:
+3) Ensure AccountService settings in /src/main/resources:
 
 datasource-tx-jpa.xml - database connection settings;
 
@@ -74,7 +75,7 @@ rmi.xml - rmi settings;
 
 service-ehcache.xml - cache settings.
 
-4) Install Maven. Goto AccountService directory, when:
+4) Install Maven. Go to AccountService directory:
 
 - to unit test service type: mvn test
 
